@@ -13,7 +13,8 @@ const init = async () => {
         loader.show('Loading data...');
 
         // Get related data from the server
-        const { data } = await http.get('/api/welcome/data');
+        const { data } = await http.get('api/customers');
+        const { data2 } = await http.get('api/agents');
 
         // Process the data here
         console.log('Received data:', data);
