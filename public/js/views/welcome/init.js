@@ -69,7 +69,7 @@ const init = async () => {
         // Prepare agent select
         {
             const agentSelectOptions = [
-                {'id': '-1', 'name': 'All', 'selected': true},
+                {'id': '-1', 'name': 'None', 'selected': true},
                 ...response.agents
             ];
             elements.selects.agent.put_options(agentSelectOptions, 'id', 'name');
@@ -78,7 +78,7 @@ const init = async () => {
         // Prepare customers select
         {
             const customerSelectOptions = [
-                {'id': '-1', 'name': 'All', 'selected': true},
+                {'id': '-1', 'name': 'None', 'selected': true},
                 ...response.customers
             ];
             elements.selects.customer.put_options(customerSelectOptions, 'id', 'name');
@@ -112,6 +112,7 @@ const init = async () => {
             // Listen to filter submit button
             elements.buttons.filter.submit.onClick(async () => {
                 // Get selected filters
+                
                 const selectedFilters = {
                     agent: elements.selects.agent.get_selected_value(),
                     customer: elements.selects.customer.get_selected_value(),
@@ -124,6 +125,7 @@ const init = async () => {
                     return;
                 }
 
+                
                 // Show loader only if we're making the request
                 loader.show('Loading data...');
 
