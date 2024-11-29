@@ -50,7 +50,7 @@ export default class InputManager {
      */
     valueGet() {
         const value = document.querySelector(`#${this.parentId} input#${this.id}`).value
-        if (!value.trim().length || !value.length) return undefined
+        if (!value.trim().length || !value.length) return ''
         else return value
     }
 
@@ -67,5 +67,9 @@ export default class InputManager {
 
         // Trigger change event
         $input.dispatchEvent(new Event('change'));
+    }
+
+    getElement() {
+        return document.querySelector(`#${this.parentId} input#${this.id}`)
     }
 }

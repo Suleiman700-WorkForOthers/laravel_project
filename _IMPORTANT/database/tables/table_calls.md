@@ -7,6 +7,8 @@ This table contains all calls.
 - id: `A_I` `mediumint` `unsigned`
     - `mediumint`: enough for this table
     - `unsigned`: to prevent negative values
+- agent_id: `smallint`
+  - `smallint`: to match the `id` column of the `agents` table
 - customer_id: `mediumint`
   - `mediumint`: to match the `id` column of the `customers` table
 - duration: `time`
@@ -15,4 +17,5 @@ This table contains all calls.
   - `date`: the date of the call
 
 Foreign Keys:
+- agent_id: foreign key to agents table
 - customer_id: foreign key to customers table

@@ -16,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/customers', [App\Http\Controllers\CustomersController::class, 'index']);
 Route::get('/agents', [App\Http\Controllers\AgentsController::class, 'index']);
+Route::get('/calls', [App\Http\Controllers\CallsController::class, 'index']);
+Route::get('/calls/by-filters', [App\Http\Controllers\CallsController::class, 'indexByFilters']);

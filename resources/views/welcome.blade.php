@@ -8,13 +8,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Date Range Picker -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
         .search-filters {
             background-color: #f8f9fa;
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
         }
         .table-container {
             background-color: white;
@@ -34,10 +36,10 @@
 <div class="container py-5">
     <!-- Page Title -->
     <div class="row mb-4">
-        <div class="col">
+        <div class="col text-center">
             <h1 class="page-title">
-                <i class="fas fa-database me-2"></i>
-                Data Management System
+                <i class="fas fa-phone me-2"></i>
+                Calls List
             </h1>
         </div>
     </div>
@@ -48,44 +50,40 @@
             <div class="row g-3">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="search" class="form-label">Search</label>
-                        <input type="text" class="form-control" id="search" placeholder="Search...">
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-select" id="status">
-                            <option value="">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
+                        <label for="select-agent" class="form-label">Agent</label>
+                        <select class="form-select" id="select-agent">
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="date" class="form-label">Date Range</label>
-                        <input type="date" class="form-control" id="date">
+                        <label for="select-customers" class="form-label">Customer</label>
+                        <select class="form-select" id="select-customers">
+                        </select>
                     </div>
                 </div>
+                <!-- <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="date1" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="date1">
+                    </div>
+                </div> -->
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="category" class="form-label">Category</label>
-                        <select class="form-select" id="category">
-                            <option value="">All Categories</option>
-                            <option value="1">Category 1</option>
-                            <option value="2">Category 2</option>
-                            <option value="3">Category 3</option>
-                        </select>
+                        <label for="date-range" class="form-label">Date</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="date-range">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" id="filter-submit">
                         <i class="fas fa-search me-1"></i> Search
                     </button>
-                    <button type="reset" class="btn btn-secondary ms-2">
+                    <button type="reset" class="btn btn-secondary ms-2" id="filter-reset" style="display: none;">
                         <i class="fas fa-undo me-1"></i> Reset
                     </button>
                 </div>
@@ -94,7 +92,23 @@
         </div>
 
         <!-- Table -->
-        <div class="table-container">
+        <div class="table-container mt-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <!-- <h3 class="mb-0">Calls</h3> -->
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover" id="test-table">
+                    <thead class="table-light">
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- Table -->
+        <div class="table-container" hidden>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3 class="mb-0">Results</h3>
                 <button class="btn btn-success">
@@ -165,5 +179,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/plugins/sweetalert/sweetalert2@11.js') }}"></script>
     <script src="{{ asset('js/views/welcome/init.js') }}" type="module"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Moment.js -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <!-- Date Range Picker -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 </body>
 </html>
