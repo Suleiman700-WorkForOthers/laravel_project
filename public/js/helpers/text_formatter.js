@@ -2,7 +2,7 @@
 /**
  * Format call duration
  * @param {string} _duration - E.g. "00:30:00"
- * @returns {string}
+ * @returns {string} E.g. "30m"
  */
 export const callDurationFormatter = (_duration) => {
     const [hours, minutes, seconds] = _duration.split(':');
