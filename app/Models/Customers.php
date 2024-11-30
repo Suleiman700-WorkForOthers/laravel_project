@@ -8,5 +8,8 @@ class customers extends Model
 {
     protected $fillable = [
         'name',
+        'email',
+        'mobile',
+        'address',
     ];
 }

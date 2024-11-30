@@ -18,6 +18,23 @@ class AgentsController extends Controller
     }
 
     /**
+     * Get all customers for a specific agent
+     */
+    public function getCustomers($id)
+    {
+        $customers = \DB::table('customers')
+            ->join('agent_customers', 'customers.id', '=', 'agent_customers.customer_id')
+            ->where('agent_customers.agent_id', $id)
+            ->select('customers.id', 'customers.name')
+            ->get();
+
+        return response()->json([
+            'state' => $customers ? true : false,
+            'data' => $customers
+        ]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -55,23 +72,6 @@ class AgentsController extends Controller
     public function update(Request $request, string $id)
     {
         //
-    }
-
-    /**
-     * Get all customers for a specific agent
-     */
-    public function getCustomers($id)
-    {
-        $customers = \DB::table('customers')
-            ->join('agent_customers', 'customers.id', '=', 'agent_customers.customer_id')
-            ->where('agent_customers.agent_id', $id)
-            ->select('customers.id', 'customers.name')
-            ->get();
-        
-        return response()->json([
-            'state' => $customers ? true : false,
-            'data' => $customers
-        ]);
     }
 
     /**

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class CustomersController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get listing of the resource.
      */
     public function index()
     {
@@ -16,6 +16,9 @@ class CustomersController extends Controller
         return response()->json(['data' => $customers]);
     }
 
+    /**
+     * Get the specified resource.
+     */
     public function show($id)
     {
         $customer = Customers::find($id);

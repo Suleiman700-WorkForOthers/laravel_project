@@ -19,6 +19,11 @@ class CallsController extends Controller
         $this->agentsController = $agentsController;
     }
 
+    /**
+     * Get all related data
+     * 
+     * This is used to get the related data when opening the welcome page
+     */
     public function index()
     {
         $agents = json_decode(json_encode($this->agentsController->index()->getData()), true);
@@ -27,6 +32,8 @@ class CallsController extends Controller
         $combinedData = [
             'customers' => $customers['data'],
             'agents' => $agents['data'],
+            
+            // We can also get the agents' customers, This is not ideally for the performance
             // 'agents' => array_map(function($agent) {
                 // $customerIds = $this->agentsController->getCustomersByAgent($agent['id'])->getData()->data;
                 // return array_merge($agent, ['customers' => $customerIds]);
@@ -36,6 +43,11 @@ class CallsController extends Controller
         return response()->json($combinedData);
     }
 
+    /**
+     * Index data by filters
+     * 
+     * This is used to get the data for the normal table
+     */
     public function indexByFilters(Request $request)
     {
         $query = DB::table('calls')
@@ -74,6 +86,11 @@ class CallsController extends Controller
         return response()->json($calls);
     }
 
+    /**
+     * Index data for DataTables
+     * 
+     * This is used to get the data for the DataTables component.
+     */
     public function indexDataTables(Request $request)
     {
         $query = DB::table('calls')

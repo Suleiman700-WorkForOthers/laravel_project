@@ -11,6 +11,8 @@ This table contains all calls.
   - `smallint`: to match the `id` column of the `agents` table
 - customer_id: `mediumint`
   - `mediumint`: to match the `id` column of the `customers` table
+- title: `varchar(500)`
+- comment: `text`
 - duration: `time`
   - `time`: the duration of the call
 - date: `date`
