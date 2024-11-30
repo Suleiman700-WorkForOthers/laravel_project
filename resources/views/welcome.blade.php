@@ -91,13 +91,14 @@
             </form>
         </div>
 
-        <!-- Table -->
+        <!-- DataTables -->
         <div class="table-container mt-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <!-- <h3 class="mb-0">Calls</h3> -->
+                <h5 class="mb-0">Dynamic Table Implementation</h5>
             </div>
+            <small class="d-block mb-3 text-warning">This table has dynamic features</small>
             <div class="table-responsive">
-                <table class="table table-hover" id="test-table">
+                <table class="table table-hover" id="datatables-table">
                     <thead class="table-light">
                     </thead>
                     <tbody>
@@ -106,6 +107,16 @@
             </div>
         </div>
 
+        <!-- Vertical Table -->
+        <div class="table-container mt-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Normal Table Implementation</h5>
+            </div>
+            <small class="d-block mb-3 text-warning">This table doesn't have any dynamic features</small>
+            <div class="table-responsive">
+                <div id="test-table"></div>
+            </div>
+        </div>
 
         <!-- Table -->
         <div class="table-container" hidden>
@@ -175,13 +186,18 @@
         </div>
     </div>
 
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/plugins/sweetalert/sweetalert2@11.js') }}"></script>
     <script src="{{ asset('js/views/welcome/init.js') }}" type="module"></script>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables -->
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
     <!-- Moment.js -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <!-- Date Range Picker -->

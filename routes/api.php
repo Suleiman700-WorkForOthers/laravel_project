@@ -22,5 +22,4 @@ Route::get('/agents/{id}/customers', [App\Http\Controllers\AgentsController::cla
 
 Route::get('/calls', [App\Http\Controllers\CallsController::class, 'index']);
 Route::get('/calls/by-filters', [App\Http\Controllers\CallsController::class, 'indexByFilters']);
-
-
+Route::get('/calls/datatables', [App\Http\Controllers\CallsController::class, 'indexDataTables']);

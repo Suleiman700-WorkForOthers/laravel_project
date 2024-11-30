@@ -63,7 +63,6 @@ class CallsController extends Controller
             else {
                 $query->where('calls.date', $request->date);
             }
-
         }
 
         // Debug final SQL query
@@ -73,5 +72,48 @@ class CallsController extends Controller
         // Log::info('Results count:', ['count' => $calls->count()]);
 
         return response()->json($calls);
+    }
+
+    public function indexDataTables(Request $request)
+    {
+        $query = DB::table('calls')
+            ->join('agents', 'calls.agent_id', '=', 'agents.id')
+            ->join('customers', 'calls.customer_id', '=', 'customers.id')
+            ->select('calls.*', 'agents.name as agent_name', 'customers.name as customer_name');
+
+        // Apply filters if they exist
+        if ($request->filled('agent') && $request->agent !== '-1') {
+            $query->where('calls.agent_id', $request->agent);
+        }
+        if ($request->filled('customer') && $request->customer !== '-1') {
+            $query->where('calls.customer_id', $request->customer);
+        }
+        // Filter by date if provided
+        if ($request->has('date') && isset($request->date) && $request->date !== '') {
+            // Check if date contains two dates
+            if (strpos($request->date, ' - ') !== false) {
+                $dates = explode(' - ', $request->date);
+                $query->whereBetween('calls.date', [$dates[0], $dates[1]]);
+            }
+            else {
+                $query->where('calls.date', $request->date);
+            }
+        }
+
+        $recordsTotal = $query->count();
+        $recordsFiltered = $recordsTotal;
+
+        // Apply pagination
+        $start = $request->input('start', 0);
+        $length = $request->input('length', ($request->has('perPage') ? $request->perPage : 10));
+        
+        $data = $query->skip($start)->take($length)->get();
+
+        return response()->json([
+            'draw' => $request->input('draw'),
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data
+        ]);
     }
 }

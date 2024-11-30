@@ -16,7 +16,7 @@ export const callDurationFormatter = (_duration) => {
     let result = '';
     if (showHours) result += `${hours}h `;
     if (showMinutes) result += `${minutes}m `;
-    if (showSeconds) result += `${seconds}s`;
+    if (showSeconds) result += `${seconds}s`;    
 
-    return result;
+    return result.length > 0 ? result : '0s';
 }

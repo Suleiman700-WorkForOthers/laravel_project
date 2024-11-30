@@ -3,7 +3,6 @@ class Loader {
         this.isLoading = false;
         this.loaderInstance = null;
         this.startTime = null;
-        this.hideDelay = 500; // Used to delay the hiding of the loading overlay when the loading time is less than x milliseconds
     }
 
     /**
@@ -35,14 +34,6 @@ class Loader {
      */
     async hide() {
         if (!this.isLoading) return;
-
-        const currentTime = Date.now();
-        const elapsedTime = currentTime - this.startTime;
-        
-        // If less than minimum duration has passed, wait for the remaining time
-        if (elapsedTime < this.hideDelay) {
-            await new Promise(resolve => setTimeout(resolve, this.hideDelay - elapsedTime));
-        }
 
         this.isLoading = false;
         if (this.loaderInstance) {
@@ -79,11 +70,6 @@ class Loader {
             const currentTime = Date.now();
             const elapsedTime = currentTime - this.startTime;
             
-            // If less than minimum duration has passed, wait for the remaining time
-            if (elapsedTime < this.hideDelay) {
-                await new Promise(resolve => setTimeout(resolve, this.hideDelay - elapsedTime));
-            }
-
             // Hide the loader first
             this.isLoading = false;
             if (this.loaderInstance) {
