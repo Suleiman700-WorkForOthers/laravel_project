@@ -61,7 +61,7 @@ const init = async () => {
                     prepareCustomerSelect(_STORAGE.customers);
                     return;
                 }
-                
+
                 try {
                     // Check if agent customers are already stored - prevent sending another request
                     if (_STORAGE.agentCustomers[selectedAgentId]) {
@@ -73,11 +73,11 @@ const init = async () => {
                     loader.show('Getting agent customers...');
                     const response = await http.get(`api/agents/${selectedAgentId}/customers`);
                     loader.hide();
-                    
+
                     if (response.state) {
                         // Store agent customers
                         _STORAGE.agentCustomers[selectedAgentId] = response.data;
-                        
+
 
                         // Append customers to select
                         const customerSelectOptions = [
@@ -112,7 +112,7 @@ const init = async () => {
                     format: 'YYYY-MM-DD'
                 }
             });
-            
+
             $(elements.inputs.date.getElement()).on('apply.daterangepicker', function(ev, picker) {
                 elements.inputs.date.valueSet(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
             });
@@ -130,7 +130,7 @@ const init = async () => {
             // Listen to filter submit button
             elements.buttons.filter.submit.onClick(async () => {
                 // Get selected filters
-                
+
                 const selectedFilters = {
                     agent: elements.selects.agent.get_selected_value(),
                     customer: elements.selects.customer.get_selected_value(),
@@ -139,15 +139,19 @@ const init = async () => {
 
                 // Check if all filters are empty
                 if (areFiltersEmpty()) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Please select at least one filter'
+                    })
                     return;
                 }
-                
+
                 // Show the filter reset button
                 elements.buttons.filter.reset.isVisible(true);
 
                 // Load data into both tables
                 dataTable.ajax.reload();
-                
+
                 // Get data from the server for vertical table
                 loader.show('Loading data...');
                 const response = await http.get('api/calls/by-filters', selectedFilters);
@@ -165,15 +169,10 @@ const init = async () => {
 
             // Listen to filter reset button
             elements.buttons.filter.reset.onClick(() => {
-                elements.forms.filter.reset();
-                elements.selects.agent.reset();
-                elements.selects.customer.reset();
+                elements.inputs.date.valueSet('');
+                elements.selects.agent.set_selected_option_by_value('-1');
+                elements.selects.customer.set_selected_option_by_value('-1');
                 elements.buttons.filter.reset.isVisible(false);
-                
-                // Clear both tables
-                dataTable.clear().draw();
-                normalTable.config.rows = [];
-                normalTable.render();
             });
         }
 
@@ -188,12 +187,12 @@ const init = async () => {
                         method: 'function',
                         callback: (row, column) => {
                             const customer = row[column.key];
-        
+
                             const div = document.createElement('div');
                             const span = document.createElement('span');
                             span.textContent = customer;
                             div.appendChild(span);
-        
+
                             const badge = document.createElement('span');
                             badge.className = 'badge bg-success mx-1';
                             badge.style.cursor = 'pointer';
@@ -202,7 +201,7 @@ const init = async () => {
                                 const customerDetails = await getCustomerDetails(row.customer_id);
                                 popup_customerDetails(customerDetails);
                             });
-                            div.appendChild(badge); 
+                            div.appendChild(badge);
                             return div;
                         }
                     },
@@ -235,7 +234,7 @@ const init = async () => {
                         method: 'function',
                         callback: (row, column) => {
                             const div = document.createElement('div');
-        
+
                             const viewButton = document.createElement('button');
                             viewButton.className = 'btn btn-sm btn-primary';
                             viewButton.innerHTML = '<i class="fas fa-eye me-1"></i> View';
@@ -244,7 +243,7 @@ const init = async () => {
                                 popup_callDetails(row);
                             });
                             div.appendChild(viewButton);
-        
+
                             return div;
                         }
                     },
@@ -254,60 +253,60 @@ const init = async () => {
                 styleTable: 'width: 100%;',
                 styleTD: 'border: 1px solid #ddd;',
             });
-            normalTable.render();    
+            normalTable.render();
         }
-        
+
         // Prepare datatable
         {
             const columns = [
-                { 
+                {
                     title: 'Agent',
                     data: 'agent_name'
                 },
-                { 
+                {
                     title: 'Customer',
                     data: 'customer_name',
                     render: function(data, type, row) {
                         const customer = row.customer_name;
-        
+
                         const div = document.createElement('div');
                         const span = document.createElement('span');
                         span.textContent = customer;
                         div.appendChild(span);
-        
+
                         const badge = document.createElement('span');
                         badge.className = 'badge bg-success mx-1 customer-info';
                         badge.style.cursor = 'pointer';
                         badge.innerHTML = '<i class="fas fa-eye"></i> Info';
                         badge.setAttribute('data-id', row.customer_id);
-                        div.appendChild(badge); 
+                        div.appendChild(badge);
 
                         return div.innerHTML;
                     }
                 },
-                { 
+                {
                     title: 'Title',
                     data: 'title',
                     render: function(data, type, row) {
                         return data.length > 20 ? `${data.substring(0, 20)}...` : data;
                     }
                 },
-                { 
+                {
                     title: 'Duration',
                     data: 'duration',
                     render: function(data) {
                         return callDurationFormatter(data);
                     }
                 },
-                { 
+                {
                     title: 'Date',
                     data: 'date',
                     render: function(data) {
                         const date = new Date(data);
-                        return date.toLocaleDateString('en-IL', { 
-                            year: 'numeric', 
-                            month: '2-digit', 
-                            day: '2-digit' 
+                        return date.toLocaleDateString('en-IL', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit'
                         });
                     }
                 },
@@ -334,7 +333,7 @@ const init = async () => {
                 serverSide: true,
                 processing: true,
                 searching: false,
-                pageLength: 1,
+                pageLength: 10,
                 lengthMenu: [[1, 5, 10, 25, 50], [1, 5, 10, 25, 50]],
                 deferLoading: true, // Prevent initial auto-load
                 ajax: {
@@ -378,7 +377,7 @@ const init = async () => {
                     });
 
                     // Add click handlers for customer info buttons after table redraw
-                    $('#datatables-table').find('.customer-info').on('click', async function() {       
+                    $('#datatables-table').find('.customer-info').on('click', async function() {
                         const id = $(this).data('id');
                         const customerDetails = await getCustomerDetails(id);
                         popup_customerDetails(customerDetails);
@@ -386,7 +385,7 @@ const init = async () => {
                 }
             });
         }
-        
+
         loader.hide();
         loader.toast('Data loaded successfully');
 
@@ -405,10 +404,9 @@ const areFiltersEmpty = () => {
     return elements.selects.agent.get_selected_value() == '-1' && elements.selects.customer.get_selected_value() == '-1' && !elements.inputs.date.valueGet();
 }
 
-
 /**
  * Prepare agent select
- * @param {array} _agents 
+ * @param {array} _agents
  */
 const prepareAgentSelect = (_agents) => {
     const agentSelectOptions = [
@@ -420,7 +418,7 @@ const prepareAgentSelect = (_agents) => {
 
 /**
  * Prepare customer select
- * @param {array} _customers 
+ * @param {array} _customers
  */
 const prepareCustomerSelect = (_customers) => {
     const customerSelectOptions = [
@@ -432,12 +430,12 @@ const prepareCustomerSelect = (_customers) => {
 
 /**
  * Get customer details
- * @param {number} _customerId 
- * @returns 
+ * @param {number} _customerId
+ * @returns
  */
 const getCustomerDetails = async (_customerId) => {
     let customerData = {};
-        
+
     // Check if customer details are already stored - prevent sending another request
     if (_STORAGE.customerDetails[_customerId]) {
         customerData = _STORAGE.customerDetails[_customerId];
