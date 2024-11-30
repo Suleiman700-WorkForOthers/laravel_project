@@ -58,25 +58,27 @@ class AgentsController extends Controller
     }
 
     /**
+     * Get all customers for a specific agent
+     */
+    public function getCustomers($id)
+    {
+        $customers = \DB::table('customers')
+            ->join('agent_customers', 'customers.id', '=', 'agent_customers.customer_id')
+            ->where('agent_customers.agent_id', $id)
+            ->select('customers.id', 'customers.name')
+            ->get();
+        
+        return response()->json([
+            'state' => $customers ? true : false,
+            'data' => $customers
+        ]);
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
         //
-    }
-
-    /**
-     * Get customers for a specific agent
-     */
-    public function getCustomersByAgent($agentId)
-    {
-        $customerIds = AgentCustomers::where('agent_id', $agentId)
-            ->pluck('customer_id')
-            ->toArray();
-
-        return response()->json([
-            'success' => true,
-            'data' => $customerIds
-        ]);
     }
 }

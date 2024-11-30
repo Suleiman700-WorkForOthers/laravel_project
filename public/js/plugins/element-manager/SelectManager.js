@@ -44,10 +44,8 @@ export default class SelectManager {
      * Deselect selected option
      */
     deselect() {
-        if (this.element) {
-            this.element.value = null;
-            this.element.dispatchEvent(new Event('change'));    
-        }
+        this.element.value = null;
+        this.element.dispatchEvent(new Event('change'));    
     }
 
     /**

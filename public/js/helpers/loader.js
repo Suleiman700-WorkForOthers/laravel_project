@@ -2,6 +2,8 @@ class Loader {
     constructor() {
         this.isLoading = false;
         this.loaderInstance = null;
+        this.startTime = null;
+        this.hideDelay = 500; // Used to delay the hiding of the loading overlay when the loading time is less than x milliseconds
     }
 
     /**
@@ -13,6 +15,7 @@ class Loader {
         if (this.isLoading) return;
 
         this.isLoading = true;
+        this.startTime = Date.now();
         this.loaderInstance = Swal.fire({
             title: message,
             allowOutsideClick: false,
@@ -30,14 +33,23 @@ class Loader {
     /**
      * Hide the loading overlay
      */
-    hide() {
+    async hide() {
         if (!this.isLoading) return;
+
+        const currentTime = Date.now();
+        const elapsedTime = currentTime - this.startTime;
+        
+        // If less than minimum duration has passed, wait for the remaining time
+        if (elapsedTime < this.hideDelay) {
+            await new Promise(resolve => setTimeout(resolve, this.hideDelay - elapsedTime));
+        }
 
         this.isLoading = false;
         if (this.loaderInstance) {
             Swal.close();
             this.loaderInstance = null;
         }
+        this.startTime = null;
     }
 
     /**
@@ -62,7 +74,25 @@ class Loader {
      * @param {string} title - Optional title for the error message
      * @returns {Promise} - SweetAlert2 instance
      */
-    error(message, title = 'Error') {
+    async error(message, title = 'Error') {
+        if (this.isLoading) {
+            const currentTime = Date.now();
+            const elapsedTime = currentTime - this.startTime;
+            
+            // If less than minimum duration has passed, wait for the remaining time
+            if (elapsedTime < this.hideDelay) {
+                await new Promise(resolve => setTimeout(resolve, this.hideDelay - elapsedTime));
+            }
+
+            // Hide the loader first
+            this.isLoading = false;
+            if (this.loaderInstance) {
+                Swal.close();
+                this.loaderInstance = null;
+            }
+            this.startTime = null;
+        }
+
         return Swal.fire({
             icon: 'error',
             title: title,

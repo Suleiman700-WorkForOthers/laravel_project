@@ -72,7 +72,7 @@
                     <div class="form-group">
                         <label for="date-range" class="form-label">Date</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="date-range">
+                            <input type="text" class="form-control" id="date-range" placeholder="Pick a date">
                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                         </div>
                     </div>
