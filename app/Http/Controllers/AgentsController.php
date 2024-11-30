@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agents;
+use App\Models\AgentCustomers;
 use Illuminate\Http\Request;
 
 class AgentsController extends Controller
@@ -62,5 +63,20 @@ class AgentsController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Get customers for a specific agent
+     */
+    public function getCustomersByAgent($agentId)
+    {
+        $customerIds = AgentCustomers::where('agent_id', $agentId)
+            ->pluck('customer_id')
+            ->toArray();
+
+        return response()->json([
+            'success' => true,
+            'data' => $customerIds
+        ]);
     }
 }

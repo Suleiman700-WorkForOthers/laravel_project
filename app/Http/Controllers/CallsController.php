@@ -21,14 +21,16 @@ class CallsController extends Controller
 
     public function index()
     {
-        // Get data from both controllers
-        $customers = $this->customersController->index()->getData();
-        $agents = $this->agentsController->index()->getData();
+        $agents = json_decode(json_encode($this->agentsController->index()->getData()), true);
+        $customers = json_decode(json_encode($this->customersController->index()->getData()), true);
 
-        // Combine the data
         $combinedData = [
-            'customers' => $customers->data,
-            'agents' => $agents->data
+            'customers' => $customers['data'],
+            'agents' => $agents['data'],
+            // 'agents' => array_map(function($agent) {
+                // $customerIds = $this->agentsController->getCustomersByAgent($agent['id'])->getData()->data;
+                // return array_merge($agent, ['customers' => $customerIds]);
+            // }, $agents['data'])
         ];
 
         return response()->json($combinedData);

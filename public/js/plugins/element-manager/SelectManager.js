@@ -157,4 +157,12 @@ export default class SelectManager {
         if (selectedValue == 'null') return false
         else return true
     }
+
+    /**
+     * Get element
+     * @return {HTML}
+     */
+    getElement() {
+        return document.querySelector(`#${this.parentId} select#${this.id}`)
+    }
 }

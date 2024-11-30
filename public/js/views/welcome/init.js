@@ -73,6 +73,21 @@ const init = async () => {
                 ...response.agents
             ];
             elements.selects.agent.put_options(agentSelectOptions, 'id', 'name');
+
+            elements.selects.agent.getElement().addEventListener('change', () => {
+                // Get selected agent
+                const selectedAgent = elements.selects.agent.get_selected_value();
+
+                // Get customers for the selected agent from the server
+                http.get('api/customers/by-agent', { agent_id: selectedAgent }).then(response => {
+                    const customerSelectOptions = [
+                        {'id': '-1', 'name': 'None', 'selected': true},
+                        ...response
+                    ];
+                    elements.selects.customer.put_options(customerSelectOptions, 'id', 'name');
+                });
+                
+            });
         }
 
         // Prepare customers select
